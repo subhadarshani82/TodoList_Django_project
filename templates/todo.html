@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="	https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container">
+<h4 style="float: right">Date : {{ date }}</h4>
+{% if get_task %} <h3>Update Task </h3>{% else %} <h3>Add Task</h3> {% endif %}
+
+{#    <form method="POST" {% if get_task %} action="/update_task/{{ get_task.id }}" {% else %}action="{% url 'add_task' %}"{% endif %}>#}
+<form method="POST" {% if get_task %} action="/task_status/{{ get_task.id }}" {% else %}action="{% url 'add_task' %}"{% endif %}>
+        {% csrf_token %}
+
+        <input type="text" class="form-control" aria-describedby="emailHelp" placeholder="type your todo here"
+               name="task" value="{{ get_task.task }}"> <br>
+        <button type="submit" class="btn btn-primary">{% if get_task %}Update{% else %}Submit{% endif %}</button>
+    </form>
+
+<hr>
+<ul class="list-group ">
+    {% for task in all_task %}
+        <li class="list-group-item d-flex justify-content-between">
+            <a href="{% url 'get_task' task.id %}" onclick="return confirm('Do you want to Edit this task ?')">
+            {{ task.task }}
+            </a>
+            <form action="{% url 'task_status' task.id %}" method="POST">
+                {% csrf_token %}
+                <select name="status" class="btn btn-danger" onchange="form.submit();">
+                    <option value="New"
+                      {% if task.status == 'New' %}selected{% endif %}
+                            {% if task.status == 'Progress' or 'Hold' or 'Complete'%}disabled{% endif %}>New</option>
+                    <option value="Progress"
+                            {% if task.status == 'Progress' %}selected{% endif %}
+                            {% if task.status == 'Complete' %}disabled{% endif %}
+                    >Progress
+                    </option>
+                    <option value="Hold"
+                            {% if task.status == 'Hold' %}selected{% endif %}
+                    {% if task.status == 'Complete' %}disabled{% endif %}>Hold</option>
+                    <option value="Complete" {% if task.status == 'Complete' %}selected{% endif %}>Complete</option>
+                </select>
+            </form>
+        </li>
+    {% endfor %}
+
+</ul>
+    <hr>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js
+"></script>
+</div>
+</body>
+</html>
