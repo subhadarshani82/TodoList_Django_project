@@ -23,7 +23,7 @@
 <ul class="list-group ">
     {% for task in all_task %}
         <li class="list-group-item d-flex justify-content-between">
-            <a href="{% url 'get_task' task.id %}" onclick="return confirm('Do you want to Edit this task ?')">
+            <a href="{% url 'get_task' task.id %}" onclick="return confirm('Do you want to Edit this task ?')" style="text-decoration: none">
             {{ task.task }}
             </a>
             <form action="{% url 'task_status' task.id %}" method="POST">
