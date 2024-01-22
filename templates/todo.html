@@ -14,7 +14,7 @@
 <form method="POST" {% if get_task %} action="/task_status/{{ get_task.id }}" {% else %}action="{% url 'add_task' %}"{% endif %}>
         {% csrf_token %}
 
-        <input type="text" class="form-control" aria-describedby="emailHelp" placeholder="type your todo here"
+        <input type="text"  required class="form-control" aria-describedby="emailHelp" placeholder="type your todo here"
                name="task" value="{{ get_task.task }}"> <br>
         <button type="submit" class="btn btn-primary">{% if get_task %}Update{% else %}Submit{% endif %}</button>
     </form>
